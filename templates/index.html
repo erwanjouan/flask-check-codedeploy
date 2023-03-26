@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="refresh" content="3">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>CodeDeploy Check</title>
+</head>
+<body>
+
+    <!-- Section 1 : Deployment Info -->
+
+    <h3>Last Deployment</h3>
+    <table>
+        <thead>
+            <tr>
+                {% for deployment_header in deployment_headers %}
+                <th>{{ deployment_header }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                {% for deployment_content in deployment_contents %}
+                <td>{{ deployment_content }}</td>
+                {% endfor %}
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Section 2 : Instances -->
+
+    <h3>Running instances</h3>
+    <table>
+        <thead>
+            <tr>
+                {% for ec2_deployment_states_header in ec2_deployment_states_headers %}
+                <th>{{ ec2_deployment_states_header }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for ec2_deployment_states_content in ec2_deployment_states_contents %}
+            <tr>
+                <td>{{ ec2_deployment_states_content['instance_id'] }}</td>
+                <td>{{ ec2_deployment_states_content['private_ip_address'] }}</td>
+                <td>{{ ec2_deployment_states_content['state']['Name'] }}</td>
+                <td>{{ ec2_deployment_states_content['last_deployment_event']['lifecycleEventName'] }}</td>
+                <td>{{ ec2_deployment_states_content['last_deployment_event']['status'] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br />
+    <iframe src="{{ alb_dns_name }}" width="500" height="200" title="Current deployment"></iframe>
+</body>
+</html>
